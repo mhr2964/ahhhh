@@ -22,7 +22,7 @@
 <hr>
 
 <h2>A Dank Meme ...</h2>
-<img src="./spongegar.png" alt="dankmeme" width="200">
+<img src="" alt="dankmeme">
   
 </body>
 <script>
@@ -44,23 +44,50 @@ const getJsonFetch = async (url, callback) => {
   callback(json);
 };
 
+const getImgFetch = async (url, callback) => {
+    let json;
+    try{
+        const response = await fetch(url,{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+        json = await response.blob();
+        imageObjectURL = URL.createObjectURL(json);
+
+    }
+    catch(error){
+        console.log("ERROR:", error);
+        json = {author: `Can't parse data file '${url}'`};
+    }
+    callback(imageObjectURL);
+};
+
 const btnHello = document.querySelector("#btn-hello");
 const btnTime = document.querySelector("#btn-time");
 const outputHello = document.querySelector("#output-hello");
 const outputTime = document.querySelector("#output-time");
+const img = document.querySelector('img');
 
 const helloJSONURL = "/helloJSON";
 const helloCallback = json => {
   outputHello.innerHTML = json.message || "No <kbd>.message</kbd> value found!";
 };
 
-const timeJSONURL = "timeJSON";
+const timeJSONURL = "/timeJSON";
 const timeCallback = json => {
   outputTime.innerHTML = json.time || "No <kbd>.message</kbd> value found!";
 };
 
+const imgURL = "/dankmemes";
+const imgCallback = image => {
+  img.src = image || "No <kbd>.message</kbd> value found!";
+};
+
 btnHello.onclick = () => getJsonFetch(helloJSONURL, helloCallback);
 btnTime.onclick = () => getJsonFetch(timeJSONURL, timeCallback);
+getImgFetch(imgURL, imgCallback);
 
 </script>
 </html>
