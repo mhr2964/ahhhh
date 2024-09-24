@@ -55,7 +55,7 @@ const helloCallback = json => {
 
 const timeJSONURL = "timeJSON";
 const timeCallback = json => {
-  outputTime.innerHTML = json.message || "No <kbd>.message</kbd> value found!";
+  outputTime.innerHTML = json.time || "No <kbd>.message</kbd> value found!";
 };
 
 btnHello.onclick = () => getJsonFetch(helloJSONURL, helloCallback);
